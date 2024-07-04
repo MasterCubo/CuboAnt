@@ -6,3 +6,7 @@ html, body {
 canvas {
   display: block;
 }
+
+span {
+  color: rgb(221, 221, 221);
+}
