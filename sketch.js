@@ -6,6 +6,7 @@
 //https://en.wikipedia.org/wiki/Langton's_ant#Extension_to_multiple_ants
 //https://lucasschuermann.com/writing/langtons-ant
 //https://www.reddit.com/r/cellular_automata/comments/h83t3z/this_is_the_largest_highway_ive_found_on_langtons/
+//https://mathtician.weebly.com/langtons-ant.html
 
 // UNHEARD OF IN ANY PROJECT BY ME, THIS IS FULLY FUCNTIONAL WITH NO ERRORS. BOOM BABY 😌
 // shoulda made a v4.5 but we now have UI controls, reverse, multiple ants, hella presets,
@@ -15,10 +16,12 @@
 
 // the sim used to be able to run preset 7 at 100 IPR at 60 fps, but now because of the new FPS slot, it runs closer to 10 fps. idk why it slows it down so much.
 
+// can load lospec palletes in preload, but not while its running :(
+
+
 // TODO
-// other presets in presets.js
-// add custom presets by using JSON input
-// make the dropdown list generate automatically
+// DONE change presets from switch case to functions
+// DONE make the dropdown list generate automatically
 // upload to github
 // render ant correctly (or remove direction)
 
@@ -48,7 +51,6 @@ let iterCount;
 let fR = 60;
 let wrap = true;
 
-let preset = 0;
 W = 100;
 H = 100;
 SF = 4; // scale factor
@@ -58,14 +60,26 @@ let reverse = false;
 let presetInfo;
 let p_presetInfo;
 
+let preset = 0;
+
+let renderAnts
+
 function preload() {
-  createUI();
+  loadAllJSON(); // in presets.js
+  createUI(); // in UI.js
+  
+  Promise.all(...promises)
+    .then(results => {
+      // idk !! tee hee
+    })
+    .catch(error => {
+      console.error("Error loading JSON files: ", error);
+    });
 }
 
 function setup() {
+  presets[preset]();
   iterCount = -1;
-
-  presetSwitch();
 
   fillColor = rulesC[0];
 
@@ -97,7 +111,9 @@ function draw() {
   }
 
   // draw ants :D
-  drawAnts();
+  if (renderAnts.checked()){
+    drawAnts();
+  }
 
   // display iteration
   if (true) {
@@ -369,96 +385,4 @@ function setPixel(x, y, c) {
   frameBuffer.pixels[x * 4 + y * W * 4] = red(c);
   frameBuffer.pixels[x * 4 + y * W * 4 + 1] = green(c);
   frameBuffer.pixels[x * 4 + y * W * 4 + 2] = blue(c);
-}
-
-function createUI() {
-  p_presetInfo = createP("Placeholder");
-  p_presetInfo.style("color", "#ddd");
-  p_presetInfo.position(W * SF * 4, 0, "static");
-
-  let playReverse = createButton("⏮");
-  playReverse.mousePressed(
-    (func = () => {
-      reverse = true;
-      loop();
-    })
-  );
-  let stepReverse = createButton("⏴");
-  stepReverse.mousePressed(
-    (func = () => {
-      reverse = true;
-      noLoop();
-      draw();
-    })
-  );
-  let pause = createButton("⏸");
-  pause.mousePressed(
-    (func = () => {
-      noLoop();
-    })
-  );
-  let reset = createButton("↺");
-  reset.mousePressed(
-    (func = () => {
-      setup();
-    })
-  );
-  let stepForward = createButton("⏵");
-  stepForward.mousePressed(
-    (func = () => {
-      reverse = false;
-      noLoop();
-      draw();
-    })
-  );
-  let playForward = createButton("⏭");
-  playForward.mousePressed(
-    (func = () => {
-      reverse = false;
-      loop();
-    })
-  );
-
-  let presets = createSelect();
-  presets.option("0");
-  presets.option("1");
-  presets.option("2");
-  presets.option("3");
-  presets.option("4");
-  presets.option("5");
-  presets.option("6");
-  presets.option("7");
-  presets.option("8");
-  presets.option("9");
-  presets.option("10");
-  presets.option("11");
-  presets.option("12");
-  presets.selected("0");
-  let loadPreset = createButton("Load");
-  loadPreset.mousePressed(
-    (func = () => {
-      preset = parseInt(presets.selected());
-      setup();
-    })
-  );
-
-  let p_sti = createP("Skip To Iteration");
-  p_sti.style("color", "#ddd");
-  let stiInput = createInput();
-  let stiRun = createButton("Skip");
-  stiRun.mousePressed(
-    (func = () => {
-      sti(stiInput.value());
-    })
-  );
-
-  let p_ipr = createP(`Iterations Per Refresh (IPR)`);
-  p_ipr.style("color", "#ddd");
-  let iprInput = createInput();
-  let iprRun = createButton("Set");
-  iprRun.mousePressed(
-    (func = () => {
-      ipr = parseInt(iprInput.value());
-    })
-  );
 }
