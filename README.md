@@ -8,13 +8,23 @@ In the UI you are able to change the Iterations Per Refresh, skip to any specifi
 ## Credits
 
 All Coding was done by hand by me, and here are some of my Sources
+
 ### For research:
+
 https://josephpetitti.com/ant
+
 https://arxiv.org/abs/math/9501233
+
 https://lospec.com/palette-list/
+
 https://en.wikipedia.org/wiki/Langton's_ant#Extension_to_multiple_ants
+
 https://lucasschuermann.com/writing/langtons-ant
+
 https://www.reddit.com/r/cellular_automata/comments/h83t3z/this_is_the_largest_highway_ive_found_on_langtons/
+
 https://mathtician.weebly.com/langtons-ant.html
+
 ### For color palettes:
+
 https://lospec.com
