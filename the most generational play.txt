@@ -1,0 +1,31 @@
+I have no idea how to convey this to you.
+I just made the most generational coding play ever.
+Im in this car with limted battery left.
+I got atmospheric dnb jungle bumping in my head 
+very dramatic
+i start SLASHING up my code
+i am slicing it open and shuffling its remains
+I cant even test anything until im done
+im just making changes to what I know should be theoretically correct
+
+originally, I had to make a lot of weird changes to my code as i was writnig it before so that it worked as intended, but wasn't theroetically what it was supposed to be doing. like id be making turns in reverse or mirroring it bc that would make it have the correct results, but idk why it wouldnt work the regular way.
+
+i just fixed all of it in one insane move
+and suddenly reverse worked again
+
+for a little backstory, i had largely functional code.
+i made a reverse mode and tested it in preset0 (normal LR ant)
+only preset0...
+it worked as intended! although i had it turning the way it was supposed to... not in reverse
+and i had it turning BASED on the color behind it... not the color it was before it was changed (the color that came previously in the ruleset)
+so when I moved to ANY preset that had any turns other than LR and any more than 1 ant or 2 rules, it failed miserably.
+
+but in this one surgical play, i absolutely murdered my code. I cut it open knowing if i failed there was no going back (i backed it up lmao)
+and then i made all the changes. i stepped back. and i ran the ant forward, and then in reverse...
+beep beep beep beep
+its heart starts beating again
+
+I am the fucking goat at coding 
+and jesus is real.
+
+holy ahit everytgign works now. wrapping, sti(), everything. completely functional. this js never seen before in a cubo project.
