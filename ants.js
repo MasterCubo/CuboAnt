@@ -161,8 +161,22 @@ function calculateAnts() {
         }
       }
       else{
-        noLoop()
+        if(antX >= W){
+          noLoop()
         console.log('ant died')
+        }
+        if(antX < 0){
+          noLoop()
+        console.log('ant died')
+        }
+        if(antY >= H){
+          noLoop()
+        console.log('ant died')
+        }
+        if(antY < 0){
+          noLoop()
+        console.log('ant died')
+        }
       }
       
       let antLocR = frameBuffer.pixels[antX * 4 + antY * W * 4];
@@ -223,8 +237,23 @@ function calculateAnts() {
         }
       }
       else {
-        noLoop()
+        if (ant[0] >= W) {
+          noLoop()
         console.log("ant died")
+        }
+        if (ant[0] < 0) {
+          noLoop()
+        console.log("ant died")
+        }
+        if (ant[1] >= H) {
+          noLoop()
+        console.log("ant died")
+        }
+        if (ant[1] < 0) {
+          noLoop()
+        console.log("ant died")
+        }
+        
 
 }
     }
