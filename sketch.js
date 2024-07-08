@@ -8,23 +8,15 @@
 //https://www.reddit.com/r/cellular_automata/comments/h83t3z/this_is_the_largest_highway_ive_found_on_langtons/
 //https://mathtician.weebly.com/langtons-ant.html
 
-// UNHEARD OF IN ANY PROJECT BY ME, THIS IS FULLY FUCNTIONAL WITH NO ERRORS. BOOM BABY 😌
-// shoulda made a v4.5 but we now have UI controls, reverse, multiple ants, hella presets,
-
-// hehe one eensy teensy problem
-// the ant is being rendered incorrectly. The simulation is fine for now but the ant's direction is misrepresented, who tf cares you cant even see it that fast.
-
-// the sim used to be able to run preset 7 at 100 IPR at 60 fps, but now because of the new FPS slot, it runs closer to 10 fps. idk why it slows it down so much.
-
-// can load lospec palletes in preload, but not while its running :(
-
+// NOTICE
+// in js, ANY `let new = arr` creates a REFERENCE of the array, even if its 1D. Use `let new = Array.from(arr)` `arr.slice()` or `[...arr]` instead
 
 // TODO
-// DONE change presets from switch case to functions
-// DONE make the dropdown list generate automatically
-// upload to github
-// render ant correctly (or remove direction)
-
+// allow for custom rulesets using JSON (I could make a null preset for custom uploads, and then set the custom preset in the load button function))
+// allow for custom palletes using JSON (you cant rn because I have the preset loading in the setup phase :D 
+// set mobile zoom to 200? idk
+// move presetInfo update to handlePresetHTML
+// make neumorphic UI? (new version pls cuz it might look dumb on all the buttons)
 
 
 let W;
@@ -46,95 +38,101 @@ let dir_R = 270;
 
 let frameBuffer;
 let fillColor;
-let ipr = 1; // iterations per refresh
+let ipr; // iterations per refresh
 let iterCount;
 let fR = 60;
-let wrap = true;
+//let wrap
 
 W = 100;
 H = 100;
 SF = 4; // scale factor
 
-let reverse = false;
+let reverse;
 
 let presetInfo;
 let p_presetInfo;
 
 let preset = 0;
 
-let renderAnts
+let renderAnts;
+
+let p_iterCount = document.getElementById("p_iterCount")
+let p_fps = document.getElementById("p_fps")
+let lastSecond
+let fpsSum = 0
+
+let wrap = document.getElementById("p_wrap")
+
 
 function preload() {
   loadAllJSON(); // in presets.js
-  createUI(); // in UI.js
   
+  handleUI(); // in UI.js
+
   Promise.all(...promises)
-    .then(results => {
+    .then((results) => {
       // idk !! tee hee
     })
-    .catch(error => {
-      console.error("Error loading JSON files: ", error);
+    .catch((error) => {
+      //console.error("Error loading JSON files: ", error);
+      // this fires every time and nothing's wrong
     });
 }
 
 function setup() {
-  presets[preset]();
-  iterCount = -1;
-
-  fillColor = rulesC[0];
-
-  createCanvas(W * SF + 100, H * SF);
-  pixelDensity(1);
-  frameRate(fR);
-
-  frameBuffer = createGraphics(W, H);
-  noSmooth();
-
-  // fill buffer
-  frameBuffer.background(color(fillColor));
-
-  p_presetInfo.remove();
-  p_presetInfo = createP(presetInfo);
-  p_presetInfo.position(W * SF * 4, 0, "static");
-  p_presetInfo.style("color", "#ddd");
+  loadPreset()  
+  restartSim()
+  lastSecond = millis()
 }
 
-function draw() {
-  if (true) {
-    background("#333");
-  }
-  image(frameBuffer, 0, 0, width - 100, height);
-
-  // calculate ant
+function draw() {    
+  
+   // calculate ant
   for (let i of new Array(ipr).keys()) {
     calculateAnts();
   }
+  
+  image(frameBuffer, 0, 0, width, height);
 
   // draw ants :D
-  if (renderAnts.checked()){
+  if (document.getElementById("renderAnts").checked) {
     drawAnts();
+    drawAntsDir();
   }
-
-  // display iteration
-  if (true) {
-    noStroke();
-    fill("#ddd");
-    textSize(14);
-    text(`Iter: ${iterCount}`, width - 98, 14);
-    text(`IPR: ${ipr}`, width - 98, 28);
-    text(`FPS: ${round(1000 / deltaTime)}`, width - 98, 42);
+    
+      // display iteration
+  p_iterCount.innerText = iterCount
+  
+  fpsSum += 1000/deltaTime
+  if (millis() - lastSecond >= 1000){
+    
+    let avgFPS = round(fpsSum/frameCount)
+    p_fps.innerText = avgFPS
+    fpsSum = 0
+    frameCount = 0
+    lastSecond = millis()
+    
   }
+  
 }
 
 function drawAnts() {
+    for (let i = 0; i < ants.length; i++) {
+      stroke("blue");
+      noFill()
+      strokeWeight(2);
+      circle(ants[i][0] * SF + SF / 2, (ants[i][1]) * SF + SF / 2, SF);
+    }
+}
+
+function drawAntsDir() {
   // draw ants
   for (let i = 0; i < ants.length; i++) {
     stroke("red");
     strokeWeight(2);
 
     switch (ants[i][2]) {
-      case dir_D:
-        circle(ants[i][0] * SF + SF / 2, (ants[i][1] - 1) * SF + SF / 2, SF);
+      case dir_U:
         line(
           ants[i][0] * SF + SF / 2,
           ants[i][1] * SF + SF / 2,
@@ -142,8 +140,7 @@ function drawAnts() {
           ants[i][1] * SF + SF / 2 - SF
         );
         break;
-      case dir_U:
-        circle(ants[i][0] * SF + SF / 2, (ants[i][1] + 1) * SF + SF / 2, SF);
+      case dir_D:
         line(
           ants[i][0] * SF + SF / 2,
           ants[i][1] * SF + SF / 2,
@@ -152,7 +149,6 @@ function drawAnts() {
         );
         break;
       case dir_L:
-        circle((ants[i][0] - 1) * SF + SF / 2, ants[i][1] * SF + SF / 2, SF);
         line(
           ants[i][0] * SF + SF / 2,
           ants[i][1] * SF + SF / 2,
@@ -161,7 +157,6 @@ function drawAnts() {
         );
         break;
       case dir_R:
-        circle((ants[i][0] + 1) * SF + SF / 2, ants[i][1] * SF + SF / 2, SF);
         line(
           ants[i][0] * SF + SF / 2,
           ants[i][1] * SF + SF / 2,
@@ -173,213 +168,6 @@ function drawAnts() {
   }
 }
 
-function calculateAnts() {
-  // move all of the ants, store the pixels they are changing, THEN change those pixels.
-
-  if (!reverse) {
-    // load the pixel array once
-    frameBuffer.loadPixels();
-    pixelChanges = [];
-
-    // move all ants, store pixel changes
-    for (let i = 0; i < ants.length; i++) {
-      let ant = ants[i];
-
-      // get the color of the pixel the ant is on
-      let antOX = ant[0];
-      let antOY = ant[1];
-      let antLocR = frameBuffer.pixels[antOX * 4 + antOY * W * 4];
-      let antLocG = frameBuffer.pixels[antOX * 4 + antOY * W * 4 + 1];
-      let antLocB = frameBuffer.pixels[antOX * 4 + antOY * W * 4 + 2];
-      let antLocation = color(antLocR, antLocG, antLocB);
-
-      // find what direction the ant will move due to color
-      let rule = -1;
-      for (let j = 0; j < rulesC.length; j++) {
-        if (rulesC[j].toString() == antLocation.toString()) {
-          rule = j;
-        }
-      }
-
-      let ruleDirection = rulesD[rule];
-
-      // change the ants direction
-      ant[2] = (ant[2] + ruleDirection + 360) % 360; // antD
-      // move the ant
-      switch (
-        ant[2] // antD
-      ) {
-        case dir_U:
-          ant[1] -= 1; // antY
-          break;
-        case dir_R:
-          ant[0] += 1; // antX
-          break;
-        case dir_D:
-          ant[1] += 1; // antY
-          break;
-        case dir_L:
-          ant[0] -= 1; // antX
-          break;
-      }
-      // wrap the ants locations
-      if (wrap) {
-        if (ant[0] >= W) {
-          ant[0] = 0;
-        }
-        if (ant[0] < 0) {
-          ant[0] = W - 1;
-        }
-        if (ant[1] >= H) {
-          ant[1] = 0;
-        }
-        if (ant[1] < 0) {
-          ant[1] = H - 1;
-        }
-      }
-
-      let newColor = rulesC[(rule + 1) % rulesC.length];
-      pixelChanges.push([antOX, antOY, newColor]);
-    }
-
-    // make the pixel changes
-    for (let i = 0; i < pixelChanges.length; i++) {
-      let x = pixelChanges[i][0];
-      let y = pixelChanges[i][1];
-      let c = pixelChanges[i][2];
-      // change the color of the pixel
-      frameBuffer.pixels[x * 4 + y * W * 4] = red(c);
-      frameBuffer.pixels[x * 4 + y * W * 4 + 1] = green(c);
-      frameBuffer.pixels[x * 4 + y * W * 4 + 2] = blue(c);
-    }
-    frameBuffer.updatePixels();
-    iterCount += 1;
-  }
-  //
-  /////////////////////////////////////////
-  //
-  else {
-    // REVERSE TIME BABY
-    // load the pixel array once
-    frameBuffer.loadPixels();
-    pixelChanges = [];
-
-    // move all ants, store pixel changes
-    for (let i = 0; i < ants.length; i++) {
-      let ant = ants[i];
-
-      // get the color of the pixel behind the ant
-      let antX = ant[0];
-      let antY = ant[1];
-
-      switch (ant[2]) {
-        case dir_U:
-          antY += 1;
-          break;
-        case dir_R:
-          antX -= 1;
-          break;
-        case dir_D:
-          antY -= 1;
-          break;
-        case dir_L:
-          antX += 1;
-      }
-      let antLocR = frameBuffer.pixels[antX * 4 + antY * W * 4];
-      let antLocG = frameBuffer.pixels[antX * 4 + antY * W * 4 + 1];
-      let antLocB = frameBuffer.pixels[antX * 4 + antY * W * 4 + 2];
-      let antLocation = color(antLocR, antLocG, antLocB);
-
-      // move the ant backwards
-      switch (
-        ant[2] // antD
-      ) {
-        case dir_U:
-          ant[1] += 1; // antY
-          break;
-        case dir_R:
-          ant[0] -= 1; // antX
-          break;
-        case dir_D:
-          ant[1] -= 1; // antY
-          break;
-        case dir_L:
-          ant[0] += 1; // antX
-          break;
-      }
-
-      // find what direction the ant will move due to color behind it
-      let rule = -1;
-      for (let j = 0; j < rulesC.length; j++) {
-        if (rulesC[j].toString() == antLocation.toString()) {
-          rule = j;
-        }
-      }
-      let ruleDirection = rulesD[rule];
-
-      // change the ants direction
-      ant[2] = (ant[2] + ruleDirection + 360) % 360; // antD
-
-      // push to pixelChanges
-      newColor = rulesC[(rule + 1) % rulesC.length];
-      pixelChanges.push([antX, antY, newColor]);
-
-      // wrap the ants locations
-      if (wrap) {
-        if (ant[0] >= W) {
-          ant[0] = 0;
-        }
-        if (ant[0] < 0) {
-          ant[0] = W - 1;
-        }
-        if (ant[1] >= H) {
-          ant[1] = 0;
-        }
-        if (ant[1] < 0) {
-          ant[1] = H - 1;
-        }
-      }
-    }
-    // make the pixel changes
-    for (let i = 0; i < pixelChanges.length; i++) {
-      let x = pixelChanges[i][0];
-      let y = pixelChanges[i][1];
-      let c = pixelChanges[i][2];
-      // change the color of the pixel
-      frameBuffer.pixels[x * 4 + y * W * 4] = red(c);
-      frameBuffer.pixels[x * 4 + y * W * 4 + 1] = green(c);
-      frameBuffer.pixels[x * 4 + y * W * 4 + 2] = blue(c);
-    }
-    frameBuffer.updatePixels();
-    iterCount -= 1;
-  }
-}
-
-function sti(n) {
-  // skip to iteration haha
-  noLoop();
-
-  console.log("Processing...");
-
-  if (n > iterCount) {
-    // if we need to skip forward
-
-    let times = n - iterCount - 2;
-
-    for (let i of new Array(times).keys()) {
-      calculateAnts();
-    }
-    draw();
-  } else {
-    let times = iterCount - n - 1;
-    reverse = true;
-    for (let i of new Array(times).keys()) {
-      calculateAnts();
-    }
-    draw();
-    reverse = false;
-  }
-}
 
 function setPixel(x, y, c) {
   frameBuffer.pixels[x * 4 + y * W * 4] = red(c);
