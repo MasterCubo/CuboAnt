@@ -172,7 +172,7 @@ function preset2() {
       // LLRR symmetric growth (works)
       W = customW ?  W : 200;
       H = customH ?  H : 200;
-      SF = customH ?  SF :2;
+      SF = customSF ? SF :2;
       ipr = 10;
       wrap.checked = true;
       ants = [[100, 100, dir_L]];
@@ -195,7 +195,7 @@ function presetLOSPECSUBMISSION() {
       // LLRR symmetric growth (works)
       W = customW ?  W : 232;
       H = customH ?  H : 60;
-      SF = customH ?  SF :2;
+      SF = customSF ? SF :2;
       ipr = 10;
       wrap.checked = true;
       ants = [[114, 32, dir_L], [50, 32, dir_U], [114+64, 32, dir_D]];
@@ -215,7 +215,7 @@ function preset3() {
         "Preset 3:<br>More Symmetric growth";
       H = customH ?  H :200;
       W = customW ?  W :200;
-      SF = customH ?  SF :2;
+      SF = customSF ? SF :2;
       ipr = 10;
       wrap.checked = true;
       ants = [[100, 100, dir_L]];
@@ -238,7 +238,7 @@ function preset4() {
         "Preset 4:<br>An ant using all 4 rules, turn left, turn right, no change, and u-turn";
       H = customH ?  H :200;
       W = customW ?  W :200;
-      SF = customH ?  SF :2;
+      SF = customSF ? SF :2;
       ipr = 10;
       wrap.checked = true;
       ants = [[100, 100, dir_U]];
@@ -261,7 +261,7 @@ function preset5() {
         "Preset 5:<br>A chaotic but normal ant with many rules.";
       H = customH ?  H :200;
       W = customW ?  W :200;
-      SF = customH ?  SF :2;
+      SF = customSF ? SF :2;
       ipr = 10;
       wrap.checked = true;
       ants = [[100, 100, dir_U]];
@@ -284,7 +284,7 @@ function preset6() {
         "Preset 6: <br>Very interesting spiral pattern that repeats. ";
       W = customW ?  W :100;
       H = customH ?  H :100;
-      SF = customH ?  SF :4;
+      SF = customSF ? SF :4;
       ipr = 3;
       wrap.checked = true;
       ants = [
@@ -312,7 +312,7 @@ function preset7() {
         "Preset 7:<br>Creates a filled triangle shape that grows and moves after 15900~ iterations";
       W = customW ?  W :400;
       H = customH ?  H :400;
-      SF = customH ?  SF :1;
+      SF = customSF ? SF :1;
       ipr = 30;
       wrap.checked = true;
       ants = [[200,200, dir_U]];
@@ -348,7 +348,7 @@ function preset8(){
         "Preset 8:<br>Chaotic growth with no confirmed highway";
       W = customW ?  W :200;
       H = customH ?  H :200;
-      SF = customH ?  SF :2;
+      SF = customSF ? SF :2;
       ipr = 25;
       wrap.checked = true;
       ants = [[100, 100, dir_U]];
@@ -372,7 +372,7 @@ function preset9(){
         "Preset 9:<br>Creates a convoluted highway.";
       W = customW ?  W :200;
       H = customH ?  H :200;
-      SF = customH ?  SF :2;
+      SF = customSF ? SF :2;
       ipr = 50;
       wrap.checked = true;
       ants = [[100, 100, dir_D]];
@@ -409,7 +409,7 @@ function preset10(){
         "Preset 10:<br>Fills space in a square around itself.";
       W = customW ?  W :200;
       H = customH ?  H :200;
-      SF = customH ?  SF :2;
+      SF = customSF ? SF :2;
       wrap.checked = true;
       ipr = 50;
       ants = [[100,100, dir_D]];
@@ -442,7 +442,7 @@ function preset11(){
       wrap.checked = false;
       W = customW ?  W :100;
       H = customH ?  H :100;
-      SF = customH ?  SF :4;
+      SF = customSF ? SF :4;
       ipr = 3;
       ants = [
         [57, 57, dir_U],
@@ -467,9 +467,9 @@ function preset12(){
   presetInfo =
         "Preset 12:<br>Another interesting oscillator, preset 6 copied 4 times. Repeats after 165,000 iterations. ";
       wrap.checked = true;
-      W = customW ?  W :200;
-      H = customH ?  H :200;
-      SF = customH ?  SF :2;
+      W = customW ?  W : 200;
+      H = customH ?  H : 200;
+      SF = customSF ?  SF : 2;
       ipr = 100;
       ants = [
         [50, 45, dir_D],
@@ -509,7 +509,7 @@ function preset13(){
       wrap.checked = true;
       W = customW ?  W :100;
       H = customH ?  H :100;
-      SF = customH ?  SF :4;
+      SF = customSF ? SF :4;
       ipr = 10;
       ants = [[50, 50, dir_U]]
       pallete = pallete.includes("⏸") ? "Nostalgia" : pallete;
@@ -531,7 +531,7 @@ function preset14() {
       wrap.checked = false;
       W = customW ?  W :400;
       H = customH ?  H :400;
-      SF = customH ?  SF :1;
+      SF = customSF ? SF :1;
       ipr = 25;
       ants = [[200, 200, dir_R]];
       pallete = pallete.includes("⏸") ? "Mother nature" : pallete;
