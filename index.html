@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/addons/p5.sound.min.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
@@ -10,8 +13,65 @@
   <body>
     <main>
     </main>
-    <script src="UI.js"></script>
+    <div class = "pdiv">
+      <p>Iteration:&ensp;</p><p id="p_iterCount"></p>
+      <p>FPS:&ensp;</p><p id="p_fps"></p>
+      <p>IPR:&ensp;</p><p id="pP_ipr"></p>
+    </div>
+    <div class="container">
+    <div class="boxl">
+      <button onclick="playReverse()">⏮</button>
+      <button onclick="stepReverse()">⏴</button>
+      <button onclick="pause()">⏸</button>
+      <button onclick="reset()">↺</button>
+      <button onclick="stepForward()">⏵</button>
+      <button onclick="playForward()">⏭</button>
+    <br>
+      <p>Render Ants</p>
+      <input type="checkbox" id="renderAnts">
+    <br>
+      <p>Skip to Iteration</p>
+      <br>
+      <input type="text" id="p_sti">  <!--get element, add keydown listener, if key = enter run func-->
+    <br>
+      <p>Iterations Per Refresh (IPR)</p>
+      <br>
+      <input type="text" id="p_ipr">
+      <br>
+      <p>Load Preset</p>
+      <br>
+      <select id="s_preset" ></select>
+      <button onclick="loadPresetButton()" id= "lpr">Load Preset</button>
+    </div>
+    
+    <div class="box2">
+      <p id="p_presetInfo"></p>
+      <br>
+      <p>Width: &ensp;</p><input id="p_W" type="text">&ensp;
+      <p>Height: &ensp;</p><input id="p_H" type="text">
+      <br>
+      <p>Scale Factor:&ensp;</p><input id="p_SF" type="text">&ensp;
+      <p>Wrap sides:</p><input id="p_wrap" type="checkbox">
+      <br>
+      <p>Rules:</p><p id="p_rules"></p>
+      <br>
+      <p>Pallete:</p><p id="p_pallete"></p>
+      <br>
+      <p>Switch Pallete: </p><select id="s_pallete"></select>
+      <button onclick="loadPallete()" id="lp">Load Pallete</button>
+      <br>
+      <button onclick="rotatePallete()" id="rp">Rotate Pallete</button>
+    </div>
+  </div>
+    <div class="box3">
+      <p><strong>COMING SOON:</strong>
+      <br>
+      This will eventually have a way to load in a custom preset, pallete, rules, canvas, and everything.</p>
+    </div>
     <script src="presets.js"></script>
+    <script src="UI.js"></script>
+    <script src="ants.js"></script>
     <script src="sketch.js"></script>
+    
   </body>
 </html>

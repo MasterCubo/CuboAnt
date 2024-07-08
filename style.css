@@ -3,10 +3,136 @@ html, body {
   padding: 0;
   background-color: #1c1c1c;
 }
+
 canvas {
   display: block;
 }
 
 span {
   color: rgb(221, 221, 221);
+}
+
+button {
+  width: 30px;
+  height: 22px;
+  border-radius: 10px;
+  transition-duration: 0.4s; 
+}
+
+input[type="text"] {
+  width: 150px;
+  height: 21px;
+}
+
+button:hover{
+ border-radius: 5px; 
+}
+
+
+p {
+  color: #ddd;
+  display: inline-block;
+  font-family: "Nunito", sans-serif;
+  line-height: 100%;
+}
+
+.pdiv {
+  display: grid;
+  grid-template-rows: 20px 20px;
+  grid-template-columns: 70px 10px; 
+}
+
+.container{
+  display: flex;
+  width: 500px;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 700px;
+}
+
+.box1{
+    flex-grow: 1;
+  width: 10px;
+}
+
+.box2 {
+    flex-grow: 1;
+  width: 350px;
+}
+
+
+.boxl, .box2 {
+  transition-duration: 0.4s;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+}
+
+.boxl:hover, .box2:hover {
+  border-width: 10px;
+  margin: 1px;
+}
+
+#p_W, #p_H {
+  width: 40px;
+}
+#p_SF{
+  width: 20px;
+}
+
+button#rp, button#lp, button#lpr {
+  width: 100px;
+  height: 20px;
+}
+
+a {
+  font-weight:bold;
+  font-family: "Nunito", sans-serif
+}
+
+a:link {
+  color: #4BBAE6;
+  background-color: transparent;
+  text-decoration: underline;
+}
+
+a:visited {
+  color: #85A9EE;
+  background-color: transparent;
+  text-decoration: underline;
+}
+
+a:hover {
+  color: #FFFFFF;
+  background-color: transparent;
+  text-decoration: underline;
+}
+
+a:active {
+  color: #FF0000;
+  background-color: transparent;
+  text-decoration: underline;
+}
+
+p#p_iterCount{
+  display: inline-block;
+}
+
+.box3 {
+  margin: 70px;
+  padding: 50px;
+  transition-duration: 0.5s;
+  border-radius: 50px;
+  background: #1c1c1c;
+  width: 700px;
+  height: 350px;
+  /* For it to look good, the numbers are height/10, width/10, shorter dimension/5  and the colors are +5% lightness and -5% lightness*/
+box-shadow:  35px 70px 70px #0e0e0e,
+             -35px -70px 70px #2a2a2a;
+}
+
+.box3:hover {
+box-shadow: inset 35px 70px 70px #0e0e0e,
+            inset -35px -70px 70px #2a2a2a;
 }
