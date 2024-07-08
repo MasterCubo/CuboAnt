@@ -13,15 +13,34 @@
 // LLRLRRLLRLLLLLLLLRRRLLRLR	   -
 // LLRLRRLLRLLLLLLLLLLRLRLR	       -
 
+// http://www.thealmightyguru.com/Wiki/index.php?title=Langton%27s_ant
+// LLRLRLL - Generates a triangular highway.
+// RRLLLRRL - Has a very slow growth, but the pattern looks like a throwing star.
+// LLRLRRLLL - A 90 degree very big pyramid-like highway.
+// RLRRLLLLL - Has aspects of a Sierpinski triangle.
+// LFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFR - Circles with tendrils which become more noisy as they near the center. (F's are N's)
+// LLBR - The ant goes out on long excursions before returning to the central mass. (B's are U's
+
+// make a 256 rule setup, I bet i can find a 256 color pallete
+
+
+
 // you can also grab palletes by using Lospec's API, https://Lospec.com/palette-list/greyt-bit.json
 // this outputs json, so json["colors"] contains a list of all of the hex codes.
 // p5 has the built-in loadJSON function which works fllawlessly.
 
 let palletes = {}
 let promises = []
+let pallete = "⏸"
+let fillColorIdx = 0
+
+let customRotate = false
+let customW = false
+let customH = false
+let customSF = false
 
 function loadAllJSON(){
-  palleteNames = [
+  palleteURLS = [
                   "ice-cream-gb",
                   "lava-gb",
                   "everglow-diamond",
@@ -48,10 +67,11 @@ function loadAllJSON(){
                   "ys-postapocalyptic-sunset",
                   "casio-basic",
                   "1-bit-chill",
+                  "cubo-ant-1-rejected-r4GF"
                  ]
-  for (let pName of palleteNames){
-    console.log("loading",pName)
-    promises.push(loadJSONasync(`https://Lospec.com/palette-list/${pName}.json`));
+  for (let pURL of palleteURLS){
+    console.log("loading",pURL)
+    promises.push(loadJSONasync(`https://Lospec.com/palette-list/${pURL}.json`));
   }
 }
   
@@ -81,59 +101,105 @@ function parseJSON(json){
 }
 
 
+function loadPreset(){
+  console.log(preset)
+  presets[preset]();
+}
 
 function preset0() {
       presetInfo =
-        "Preset 0:<br>The standard Langton's Ant.<br>Rules: LR <br>Colors: <a href='https://lospec.com/palette-list/1bit-monitor-glow'>1bit Monitor Glow Pallete</a>";
-      wrap = false;
-      W = 100;
-      H = 100;
-      SF = 4;
+        "Preset 0:<br>The standard Langton's Ant.";
+      wrap.checked = false;
+  
+      W =  customW ? W : 100
+      H = customH ? H : 100
+      SF = customSF ? SF : 4;
+  
       ipr = 1;
       ants = [[50, 50, dir_R]];
-      let pallete = "1bit Monitor Glow"
-      rulesC = palletes[pallete].colors
-      let fillColorIdx = 0
-      for (let i = 0; i < fillColorIdx; i++) { // rotates the array to have a different fillColor
-        rulesC.push(rulesC.shift());
+  
+      pallete = pallete.includes("⏸") ? "1bit Monitor Glow" : pallete;
+  
+      if(!customRotate){
+        rulesC = Array.from(palletes[pallete].colors)
+        fillColorIdx = 0
+        for (let i = 0; i < fillColorIdx; i++) { // rotates the array to have a different fillColor
+          rulesC.push(rulesC.shift());
+        }
       }
+  
       rulesD = [turn_R, turn_L];
+  
+
+      pallete = pallete+"⏸" // fixes custom pallete-ing, when you set a custom pallete it DOESNT put the pause on it. So you can check if its custom by seeing if theres a pause on it. I'm not entirely sure I need this, but its effects are negligible. This wasn't meant to be perfect code, it was a week-long fun project. 😁
+      customRotate = false
+
+  
 }
 
 function preset1() {
   // wierd bars!!! (works)
       presetInfo =
-        "Preset 1:<br>Wierd bars that are generated using the 'No Change' command. Counts up in binary bars. <br>Rules: RN <br>Colors: <a href='https://lospec.com/palette-list/casio-basic'>Casio Basic Pallete</a";
-      W = 100;
-      H = 100;
-      SF = 4;
+        "Preset 1:<br>Wierd bars that are generated using the 'No Change' command. Counts up in binary bars. ";
+      W = customW ? W :100;
+      H = customH ? H : 100;
+      SF = customSF ? SF : 4;
       ipr = 5;
-      wrap = false;
+      wrap.checked = false;
       ants = [
         [57, 57, dir_U],
-        [57, 43, dir_L],
-        [43, 43, dir_D],
-        [43, 57, dir_R],
+        // [57, 43, dir_L],
+        // [43, 43, dir_D],
+        // [43, 57, dir_R],
       ];
-      let pallete = "Casio Basic"
-      rulesC = palletes[pallete].colors
-      let fillColorIdx = 0
-      for (let i = 0; i < fillColorIdx; i++) { // rotates the array to have a different fillColor
-        rulesC.push(rulesC.shift());
-      };
+      pallete = pallete.includes("⏸") ? "Casio Basic" : pallete;
+      if(!customRotate){
+        rulesC = Array.from(palletes[pallete].colors)
+        fillColorIdx = 0
+        for (let i = 0; i < fillColorIdx; i++) { // rotates the array to have a different fillColor
+          rulesC.push(rulesC.shift());
+        }
+      }
       rulesD = [turn_R, turn_N];
+  
+    pallete = pallete+"⏸"
+    customRotate = false
 }
 
 function preset2() {
    presetInfo =
-        "Preset 2:<br>Symmetric growth<br>Rules: LLRR<br>Colors: black-white-magenta-cyan";
+        "Preset 2:<br>Symmetric growth, grows into a cardioid shape";
       // LLRR symmetric growth (works)
-      W = 200;
-      H = 200;
-      SF = 2;
+      W = customW ?  W : 200;
+      H = customH ?  H : 200;
+      SF = customH ?  SF :2;
       ipr = 10;
-      wrap = true;
+      wrap.checked = true;
       ants = [[100, 100, dir_L]];
+      pallete = pallete.includes("⏸") ? "Cubo Ant 1" : pallete;
+      if(!customRotate){
+        rulesC = Array.from(palletes[pallete].colors)
+        fillColorIdx = 0
+        for (let i = 0; i < fillColorIdx; i++) { // rotates the array to have a different fillColor
+          rulesC.push(rulesC.shift());
+        }
+      }
+      rulesD = [turn_L, turn_L, turn_R, turn_R];
+   pallete = pallete+"⏸"
+    customRotate = false
+}
+
+function presetLOSPECSUBMISSION() {
+   presetInfo =
+        "Preset 2:<br>Symmetric growth, grows into a cardioid shape";
+      // LLRR symmetric growth (works)
+      W = customW ?  W : 232;
+      H = customH ?  H : 60;
+      SF = customH ?  SF :2;
+      ipr = 10;
+      wrap.checked = true;
+      ants = [[114, 32, dir_L], [50, 32, dir_U], [114+64, 32, dir_D]];
+      pallete = pallete.includes("⏸") ? "" : pallete;
       rulesC = [
         color("black"),
         color("white"),
@@ -146,100 +212,117 @@ function preset2() {
 function preset3() {
   // RLLR
       presetInfo =
-        "Preset 3:<br>More Symmetric growth<br>Rules: RLLR<br>Colors: <a href='https://lospec.com/palette-list/ice-cream-gb'>ICE CREAM GB Pallete</a>";
-      H = 200;
-      W = 200;
-      SF = 2;
+        "Preset 3:<br>More Symmetric growth";
+      H = customH ?  H :200;
+      W = customW ?  W :200;
+      SF = customH ?  SF :2;
       ipr = 10;
-      wrap = true;
+      wrap.checked = true;
       ants = [[100, 100, dir_L]];
-      let pallete = "Ice Cream GB"
-      rulesC = palletes[pallete].colors
-      let fillColorIdx = 0
-      for (let i = 0; i < fillColorIdx; i++) { // rotates the array to have a different fillColor
-        rulesC.push(rulesC.shift());
-      }
-  
+      pallete = pallete.includes("⏸") ? "Ice Cream GB" : pallete;
+      if(!customRotate){
+        rulesC = Array.from(palletes[pallete].colors)
+        fillColorIdx = 0
+        for (let i = 0; i < fillColorIdx; i++) { // rotates the array to have a different fillColor
+          rulesC.push(rulesC.shift());
+        }
+      }  
       rulesD = [turn_R, turn_L, turn_L, turn_R];
+    pallete = pallete+"⏸"
+    customRotate = false
 }
 
 function preset4() {
   // new rules! LRDU
       presetInfo =
-        "Preset 4:<br>An ant using all 4 rules, turn left, turn right, no change, and u-turn<br>Rules: LRNU<br>Colors: <a href='https://lospec.com/palette-list/lava-gb'>LAVA-GB Pallete</a>";
-      H = 200;
-      W = 200;
-      SF = 2;
+        "Preset 4:<br>An ant using all 4 rules, turn left, turn right, no change, and u-turn";
+      H = customH ?  H :200;
+      W = customW ?  W :200;
+      SF = customH ?  SF :2;
       ipr = 10;
-      wrap = true;
+      wrap.checked = true;
       ants = [[100, 100, dir_U]];
-      let pallete = "Lava-GB"
-      rulesC = palletes[pallete].colors
-      let fillColorIdx = 0
-      for (let i = 0; i < fillColorIdx; i++) { // rotates the array to have a different fillColor
-        rulesC.push(rulesC.shift());
+      pallete = pallete.includes("⏸") ? "Lava-GB" : pallete;
+      if(!customRotate){
+        rulesC = Array.from(palletes[pallete].colors)
+        fillColorIdx = 0
+        for (let i = 0; i < fillColorIdx; i++) { // rotates the array to have a different fillColor
+          rulesC.push(rulesC.shift());
+        }
       }
       rulesD = [turn_L, turn_R, turn_N, turn_U];
+  pallete = pallete+"⏸"
+    customRotate = false
 }
 
 function preset5() {
   // random LRLRLR
       presetInfo =
-        "Preset 5:<br>A chaotic but normal ant with many rules.<br>Rules: LRLRLR<br>Colors: <a href='https://lospec.com/palette-list/inkpink'>INKPINK Pallete</a>";
-      H = 200;
-      W = 200;
-      SF = 2;
+        "Preset 5:<br>A chaotic but normal ant with many rules.";
+      H = customH ?  H :200;
+      W = customW ?  W :200;
+      SF = customH ?  SF :2;
       ipr = 10;
-      wrap = true;
+      wrap.checked = true;
       ants = [[100, 100, dir_U]];
-      let pallete = "INKPINK"
-      rulesC = palletes[pallete].colors
-      let fillColorIdx = 5
-      for (let i = 0; i < fillColorIdx; i++) { // rotates the array to have a different fillColor
-        rulesC.push(rulesC.shift());
+      pallete = pallete.includes("⏸") ? "INKPINK" : pallete;
+      if(!customRotate){
+        rulesC = Array.from(palletes[pallete].colors)
+        fillColorIdx = 5
+        for (let i = 0; i < fillColorIdx; i++) { // rotates the array to have a different fillColor
+          rulesC.push(rulesC.shift());
+        }
       }
       rulesD = [turn_L, turn_R, turn_L, turn_R, turn_L, turn_R];
+  pallete = pallete+"⏸"
+    customRotate = false
 }
 
 function preset6() {
   // spiral pattern LRLRLR SUPER SICK
       presetInfo =
-        "Preset 6: <br>Very interesting spiral pattern that repeats. <br>Rules: 4 ants, LRLRLR<br>Colors: <a href='https://lospec.com/palette-list/curiosities'>curiosities Pallete</a>";
-      W = 100;
-      H = 100;
-      SF = 4;
+        "Preset 6: <br>Very interesting spiral pattern that repeats. ";
+      W = customW ?  W :100;
+      H = customH ?  H :100;
+      SF = customH ?  SF :4;
       ipr = 3;
-      wrap = true;
+      wrap.checked = true;
       ants = [
         [50, 45, dir_D],
         [55, 50, dir_L],
         [50, 55, dir_U],
         [45, 50, dir_R],
       ];
-      let pallete = "curiosities"
-      rulesC = palletes[pallete].colors
-      let fillColorIdx = 0
-      for (let i = 0; i < fillColorIdx; i++) { // rotates the array to have a different fillColor
-        rulesC.push(rulesC.shift());
+      pallete = pallete.includes("⏸") ? "curiosities" : pallete;
+      if(!customRotate){
+        rulesC = Array.from(palletes[pallete].colors)
+        fillColorIdx = 0
+        for (let i = 0; i < fillColorIdx; i++) { // rotates the array to have a different fillColor
+          rulesC.push(rulesC.shift());
+        }
       }
       rulesD = [turn_L, turn_R, turn_L, turn_R, turn_L, turn_R];
+  pallete = pallete+"⏸"
+    customRotate = false
 }
 
 function preset7() {
   // big triangular prism RRLLLRLLLRRR
       presetInfo =
-        "Preset 7:<br>Creates a filled triangle shape that grows and moves after 15900~ iterations<br>Rules: RRLLLRLLLRRR<br>Colors: <a href='https://lospec.com/palette-list/everglow-diamond'>Everglow Diamond Pallete</a>";
-      W = 400;
-      H = 400;
-      SF = 1;
+        "Preset 7:<br>Creates a filled triangle shape that grows and moves after 15900~ iterations";
+      W = customW ?  W :400;
+      H = customH ?  H :400;
+      SF = customH ?  SF :1;
       ipr = 30;
-      wrap = true;
+      wrap.checked = true;
       ants = [[200,200, dir_U]];
-      let pallete = "Everglow Diamond"
-      rulesC = palletes[pallete].colors
-      let fillColorIdx = 0
-      for (let i = 0; i < fillColorIdx; i++) { // rotates the array to have a different fillColor
-        rulesC.push(rulesC.shift());
+      pallete = pallete.includes("⏸") ? "Everglow Diamond" : pallete;
+      if(!customRotate){
+        rulesC = Array.from(palletes[pallete].colors)
+        fillColorIdx = 0
+        for (let i = 0; i < fillColorIdx; i++) { // rotates the array to have a different fillColor
+          rulesC.push(rulesC.shift());
+        }
       }
       rulesD = [
         turn_R,
@@ -255,43 +338,52 @@ function preset7() {
         turn_R,
         turn_R,
       ];
+  pallete = pallete+"⏸"
+    customRotate = false
 }
 
 function preset8(){
   // RLR chaotic growth, no highway confirmed
       presetInfo =
-        "Preset 8:<br>Chaotic growth with no confirmed highway<br>Rules: RLR <br>Colors: <a href='https://lospec.com/palette-list/1-bit-styx'>1bit-styx Pallete</a>";
-      W = 200;
-      H = 200;
-      SF = 2;
+        "Preset 8:<br>Chaotic growth with no confirmed highway";
+      W = customW ?  W :200;
+      H = customH ?  H :200;
+      SF = customH ?  SF :2;
       ipr = 25;
-      wrap = true;
+      wrap.checked = true;
       ants = [[100, 100, dir_U]];
-      let pallete = "1bit-styx"
-      rulesC = palletes[pallete].colors
-      let fillColorIdx = 2
-      for (let i = 0; i < fillColorIdx; i++) { // rotates the array to have a different fillColor
-        rulesC.push(rulesC.shift());
+      pallete = pallete.includes("⏸") ? "1bit-styx" : pallete;
+      if(!customRotate){
+        rulesC = Array.from(palletes[pallete].colors)
+        fillColorIdx = 2
+        for (let i = 0; i < fillColorIdx; i++) { // rotates the array to have a different fillColor
+          rulesC.push(rulesC.shift());
+        }
       }
       // // alternate palettes, BumbleBit, 1bit-styx, Mystique life 3, Blue Snow, Minimal-Red-3
       rulesD = [turn_R, turn_L, turn_R];
+       pallete = pallete+"⏸"
+      customRotate = false
 }
 
 function preset9(){
   // LLRRRLRLRLLR "creates a convoluted highway" 🤓
       presetInfo =
-        "Preset 9:<br>Creates a convoluted highway.<br>Rules: LLRRRLRLRLLR<br>Colors: <a href='https://lospec.com/palette-list/ghost-town'>Ghost Town Pallete</a>";
-      W = 200;
-      H = 200;
-      SF = 2;
+        "Preset 9:<br>Creates a convoluted highway.";
+      W = customW ?  W :200;
+      H = customH ?  H :200;
+      SF = customH ?  SF :2;
       ipr = 50;
-      wrap = true;
+      wrap.checked = true;
       ants = [[100, 100, dir_D]];
-      let pallete = "Ghost Town"
-      rulesC = palletes[pallete].colors
-      let fillColorIdx = 3
-      for (let i = 0; i < fillColorIdx; i++) { // rotates the array to have a different fillColor
-        rulesC.push(rulesC.shift());
+      pallete = pallete.includes("⏸") ? "Ghost Town" : pallete;
+  
+      if(!customRotate){
+        rulesC = Array.from(palletes[pallete].colors)
+        fillColorIdx = 3
+        for (let i = 0; i < fillColorIdx; i++) { // rotates the array to have a different fillColor
+          rulesC.push(rulesC.shift());
+        }
       }
       rulesD = [
         turn_L,
@@ -307,24 +399,28 @@ function preset9(){
         turn_L,
         turn_R,
       ];
+  pallete = pallete+"⏸"
+    customRotate = false
 }
 
 function preset10(){
   //// LRRRRRLLR "fills itself in a square"
       presetInfo =
-        "Preset 10:<br>Fills space in a square around itself.<br>Rules: LRRRRRLLR <br>Colors: <a href='https://lospec.com/palette-list/white-scape'>White Scape Pallete</a>";
-      W = 200;
-      H = 200;
-      SF = 2;
-      wrap = true;
+        "Preset 10:<br>Fills space in a square around itself.";
+      W = customW ?  W :200;
+      H = customH ?  H :200;
+      SF = customH ?  SF :2;
+      wrap.checked = true;
       ipr = 50;
       ants = [[100,100, dir_D]];
-      let pallete = "White Scape"
-      rulesC = palletes[pallete].colors
-      let fillColorIdx = 0
-      for (let i = 0; i < fillColorIdx; i++) { // rotates the array to have a different fillColor
-        rulesC.push(rulesC.shift());
-      } // alternate palletes, BASIC BIT, ABYSS-9, BloodMoon21
+      pallete = pallete.includes("⏸") ? "White Scape" : pallete;
+      if(!customRotate){
+        rulesC = Array.from(palletes[pallete].colors)
+        fillColorIdx = 0
+        for (let i = 0; i < fillColorIdx; i++) { // rotates the array to have a different fillColor
+          rulesC.push(rulesC.shift());
+        }
+      }
       rulesD = [
         turn_L,
         turn_R,
@@ -336,15 +432,17 @@ function preset10(){
         turn_L,
         turn_R,
       ];
+  pallete = pallete+"⏸"
+    customRotate = false
 }
 
 function preset11(){
   presetInfo =
-        "Preset 11:<br>The standard Langton's Ant, but 4 times. Oscillates infintely within a finite space<br>Rules: 4 ants, LR <br>Colors: <a href='https://lospec.com/palette-list/bitbee'>Bitbee Pallete</a>";
-      wrap = false;
-      W = 100;
-      H = 100;
-      SF = 4;
+        "Preset 11:<br>The standard Langton's Ant, but 4 times. Oscillates infintely within a finite space";
+      wrap.checked = false;
+      W = customW ?  W :100;
+      H = customH ?  H :100;
+      SF = customH ?  SF :4;
       ipr = 3;
       ants = [
         [57, 57, dir_U],
@@ -352,22 +450,26 @@ function preset11(){
         [43, 43, dir_D],
         [43, 57, dir_R],
       ];
-      let pallete = "Bitbee"
-      rulesC = palletes[pallete].colors
-      let fillColorIdx = 0
-      for (let i = 0; i < fillColorIdx; i++) { // rotates the array to have a different fillColor
-        rulesC.push(rulesC.shift());
+      pallete = pallete.includes("⏸") ? "Bitbee" : pallete;
+      if(!customRotate){
+        rulesC = Array.from(palletes[pallete].colors)
+        fillColorIdx = 0
+        for (let i = 0; i < fillColorIdx; i++) { // rotates the array to have a different fillColor
+          rulesC.push(rulesC.shift());
+        }
       }
       rulesD = [turn_R, turn_L];
+  pallete = pallete+"⏸"
+    customRotate = false
 }
 
 function preset12(){
   presetInfo =
-        "Preset 12:<br>Another interesting oscillator, preset 6 copied 4 times. Repeats after 165,000 iterations. <br>Rules: 16 ants, LRLRLR <br>Colors: <a href='https://lospec.com/palette-list/autumn-decay'>Autumn Decay Pallete</a>";
-      wrap = true;
-      W = 200;
-      H = 200;
-      SF = 2;
+        "Preset 12:<br>Another interesting oscillator, preset 6 copied 4 times. Repeats after 165,000 iterations. ";
+      wrap.checked = true;
+      W = customW ?  W :200;
+      H = customH ?  H :200;
+      SF = customH ?  SF :2;
       ipr = 100;
       ants = [
         [50, 45, dir_D],
@@ -387,50 +489,62 @@ function preset12(){
         [50, 155, dir_U],
         [45, 150, dir_R]
       ];
-      let pallete = "Autumn Decay"
-      rulesC = palletes[pallete].colors
-      let fillColorIdx = 0
-      for (let i = 0; i < fillColorIdx; i++) { // rotates the array to have a different fillColor
-        rulesC.push(rulesC.shift());
+      pallete = pallete.includes("⏸") ? "Autumn Decay" : pallete;
+      if(!customRotate){
+        rulesC = Array.from(palletes[pallete].colors)
+        fillColorIdx = 0
+        for (let i = 0; i < fillColorIdx; i++) { // rotates the array to have a different fillColor
+          rulesC.push(rulesC.shift());
+        }
       }
       rulesD = [turn_L, turn_R, turn_L, turn_R, turn_L, turn_R];
+  pallete = pallete+"⏸"
+    customRotate = false
 
 }
 
 function preset13(){
    presetInfo =
-        "Preset 13:<br>Interesting cross pattern with linear highways and a knot in the middle<br>Rules: ULNR <br>Colors: <a href='https://lospec.com/palette-list/nostalgia'>Nostalgia Pallete</a>";
-      wrap = true;
-      W = 400;
-      H = 400;
-      SF = 1;
-      ipr = 25;
+        "Preset 13:<br>Interesting cross pattern with linear highways and a knot in the middle";
+      wrap.checked = true;
+      W = customW ?  W :100;
+      H = customH ?  H :100;
+      SF = customH ?  SF :4;
+      ipr = 10;
       ants = [[50, 50, dir_U]]
-      let pallete = "Nostalgia"
-      rulesC = palletes[pallete].colors
-      let fillColorIdx = 0
-      for (let i = 0; i < fillColorIdx; i++) { // rotates the array to have a different fillColor
-        rulesC.push(rulesC.shift());
+      pallete = pallete.includes("⏸") ? "Nostalgia" : pallete;
+      if(!customRotate){
+        rulesC = Array.from(palletes[pallete].colors)
+        fillColorIdx = 0
+        for (let i = 0; i < fillColorIdx; i++) { // rotates the array to have a different fillColor
+          rulesC.push(rulesC.shift());
+        }
       }
       rulesD = [turn_U, turn_L, turn_N, turn_R];
+  pallete = pallete+"⏸"
+    customRotate = false
 }
 
 function preset14() {
       presetInfo =
-        "Preset 14:<br>Falls into a pattern of making Archimedes' spiral, surrounded by a solid square of cells.<br>Rules: LRRRRLLLRRR <br>Colors:  <a href='https://lospec.com/palette-list/mother-nature'>Mother nature Pallete</a>";
-      wrap = false;
-      W = 400;
-      H = 400;
-      SF = 1;
+        "Preset 14:<br>Falls into a pattern of making Archimedes' spiral, surrounded by a solid square of cells.";
+      wrap.checked = false;
+      W = customW ?  W :400;
+      H = customH ?  H :400;
+      SF = customH ?  SF :1;
       ipr = 25;
-      ants = [[50, 50, dir_R]];
-      let pallete = "Mother nature"
-      rulesC = palletes[pallete].colors
-      let fillColorIdx = 0
-      for (let i = 0; i < fillColorIdx; i++) { // rotates the array to have a different fillColor
-        rulesC.push(rulesC.shift());
+      ants = [[200, 200, dir_R]];
+      pallete = pallete.includes("⏸") ? "Mother nature" : pallete;
+      if(!customRotate){
+        rulesC = Array.from(palletes[pallete].colors)
+        fillColorIdx = 0
+        for (let i = 0; i < fillColorIdx; i++) { // rotates the array to have a different fillColor
+          rulesC.push(rulesC.shift());
+        }
       }
       rulesD = [turn_L, turn_R, turn_R, turn_R, turn_R, turn_L, turn_L, turn_L, turn_R, turn_R, turn_R];
+  pallete = pallete+"⏸"
+    customRotate = false
 }
 
 function preset15() {
