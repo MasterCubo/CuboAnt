@@ -141,13 +141,23 @@ function playForward() {
   loop();
 }
 
+function popup() {
+  var popup = document.getElementById("popup");
+  popup.classList.toggle("show");
+}
+
+
+
+
+
+
 function updatePresetHTML() {
   
     document.getElementById("p_presetInfo").innerHTML = presetInfo;
   
   
   let p_rules = document.getElementById("p_rules");
-  let string = `&ensp;${ants.length} ant(s),&ensp;`;
+  let string = `,&ensp;`;
   for (let r of rulesD) {
     switch (r) {
       case turn_L:
@@ -165,6 +175,34 @@ function updatePresetHTML() {
     }
   }
   p_rules.innerHTML = string;
+  
+  let p_ants = document.getElementById("p_ants");
+  string = `&ensp;${ants.length} ant${ ants.length > 1 ? "s" : ""}`;
+  p_ants.innerHTML = string
+  
+  
+  let popupAnts = document.getElementById("popup");
+  string = "<p>"
+  let dir
+  for (let i=0; i<ants.length;i++){
+    switch(ants[i][2]){
+      case dir_U:
+         dir = "up"
+        break;
+      case dir_D:
+         dir = "down"
+        break;
+      case dir_L:
+         dir = "left"
+        break;
+      case dir_R:
+         dir = "right"
+        break;
+    }
+    string += `Ant ${i}: ${ants[i][0]}, ${ants[i][1]}, ${dir} <br>`
+  }
+  string += "</p>"
+  popupAnts.innerHTML = string
 
   let p_pallete = document.getElementById("p_pallete");
   let palleteURL = pallete.slice(0, -1);
@@ -172,8 +210,10 @@ function updatePresetHTML() {
   palleteURL = palleteURL
     .toLowerCase()
     .replace(/[^\w\s-]/g, "")
-    .replace(/\s+/g, "-");
-  p_pallete.innerHTML = `&ensp;<a href="https://lospec.com/palette-list/${palleteURL}">${pallete.slice(0,-1)} Pallete</a>`;
+    .replace(/\s+/g, "-")
+    .replace(/---/g, "-") // gato roboto - goop -> gato-roboto---goop XX fixed!
+    .replace(/-$/g, ""); // trailing -'s like 'nebulosa !' -> 'nebulosa-'
+  p_pallete.innerHTML = `&ensp;<a href="https://lospec.com/palette-list/${palleteURL}">${pallete.slice(0,-1)} Pallete by ${palletes[pallete.slice(0,-1)].author}</a>`;
 
   let s_pallete = document.getElementById("s_pallete");
 
