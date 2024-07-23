@@ -306,18 +306,21 @@ function sti(n) {
 }
 
 function restartSim() {
+  
   console.log("restarting")
   updatePresetHTML();
   iterCount = 0;
   reverse = false;
 
   fillColor = rulesC[0];
-
-  createCanvas(W * SF, H * SF);
+  
+  //resizeCanvas(W*SF, H*SF);
+  createCanvas(W*SF, H*SF)
   pixelDensity(1);
   frameRate(fR);
 
   frameBuffer = createGraphics(W, H);
+  frameBuffer.willReadFrequently = true
   noSmooth();
 
   // fill buffer
