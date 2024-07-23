@@ -1,7 +1,7 @@
 # CuboAnt
 A website for simulating multiple variations Langton's Ant. Written with p5.js
 
-Go to [this p5 link](https://editor.p5js.org/Cubo/sketches/_s8DtFXB0) for the most recent version. (Unless I made a v7 and didn't update the github, check [here](https://editor.p5js.org/Cubo/sketches))
+Go to [this p5 link](https://editor.p5js.org/Cubo/sketches/CgM8f6tgI) for the most recent version. (Unless I made a v7 and didn't update the github, check [here](https://editor.p5js.org/Cubo/sketches))
 
 ## Controls
 In the UI you are able to change the Iterations Per Refresh, skip to any specific Iteration, set the Preset, turn the Ant on or off, pause, play, reverse, and step. 
