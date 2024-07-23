@@ -25,9 +25,9 @@
 
 
 
-// you can also grab palletes by using Lospec's API, https://Lospec.com/palette-list/greyt-bit.json
-// this outputs json, so json["colors"] contains a list of all of the hex codes.
-// p5 has the built-in loadJSON function which works fllawlessly.
+// can get more palletes of these sizes:
+// good ish 4, 2, 6,
+// more 12, 3, 9, 11
 
 let palletes = {}
 let promises = []
@@ -41,33 +41,54 @@ let customSF = false
 
 function loadAllJSON(){
   palleteURLS = [
-                  "ice-cream-gb",
-                  "lava-gb",
-                  "everglow-diamond",
-                  "curiosities",
-                  "minimal-red-3",
-                  "ghost-town",
-                  "white-scape",
-                  "bitbee",
-                  "autumn-decay",
-                  "nostalgia",
-                  "bumblebit",
-                  "1bit-styx",
-                  "mystique-life-3",
-                  "blue-snow",
-                  "basic-bit",
-                  "abyss-9",
-                  "bloodmoon21",
-                  "mother-nature",
-                  "inkpink",
-                  "1bit-monitor-glow",
-                  "gato-roboto-virtual-cat",
-                  "gato-roboto-goop",
-                  "generic-milk-carton",
-                  "ys-postapocalyptic-sunset",
-                  "casio-basic",
-                  "1-bit-chill",
-                  "cubo-ant-1-rejected-r4GF"
+      "ice-cream-gb",
+      "lava-gb",
+      "everglow-diamond",
+      "curiosities",
+      "minimal-red-3",
+      "ghost-town",
+      "white-scape",
+      "bitbee",
+      "autumn-decay",
+      "nostalgia",
+      "bumblebit",
+      "1bit-styx",
+      "mystique-life-3",
+      "blue-snow",
+      "basic-bit",
+      "abyss-9",
+      "bloodmoon21",
+      "mother-nature",
+      "inkpink",
+      "1bit-monitor-glow",
+      "gato-roboto-virtual-cat",
+      "gato-roboto-goop",
+      "generic-milk-carton",
+      "ys-postapocalyptic-sunset",
+      "casio-basic",
+      "1-bit-chill",
+      "cubo-ant-1-rejected-r4GF",
+      "cloudfrenzy",
+      "joker-6",
+      "royalguard",
+      "ice-cream-spice",
+      "moonlight-gb",
+      "wish-gb",
+      "gold-gb",
+      "horehound-4",
+      "minty-fresh",
+      "lava-has-the-viscosity-of-ketchup",
+      "enchanted-purple",
+      "nebulosa",
+      "skyline-12",
+      "12-bit-rainbow",
+      // "",
+      // "",
+      // "",
+      // "",
+      // "",
+      // "",
+    
                  ]
   for (let pURL of palleteURLS){
     console.log("loading",pURL)
@@ -97,7 +118,7 @@ function parseJSON(json){
   for (let c of hexes){
     output.push(color(`#${c}`))
   }
-  palletes[json.name] = {size: output.length, colors: output}
+  palletes[json.name] = {size: output.length, colors: output, author: json.author}
 }
 
 
@@ -116,7 +137,7 @@ function preset0() {
       SF = customSF ? SF : 4;
   
       ipr = 1;
-      ants = [[50, 50, dir_R]];
+      ants = [[floor(W/2), floor(H/2), dir_R]];
   
       pallete = pallete.includes("⏸") ? "1bit Monitor Glow" : pallete;
   
@@ -147,10 +168,10 @@ function preset1() {
       ipr = 5;
       wrap.checked = false;
       ants = [
-        [57, 57, dir_U],
-        // [57, 43, dir_L],
-        // [43, 43, dir_D],
-        // [43, 57, dir_R],
+        [floor(W/2)+7, floor(H/2)+7, dir_U],
+        [floor(W/2)+7, floor(H/2)-7, dir_L],
+        [floor(W/2)-7, floor(H/2)-7, dir_D],
+        [floor(W/2)-7, floor(H/2)+7, dir_R],
       ];
       pallete = pallete.includes("⏸") ? "Casio Basic" : pallete;
       if(!customRotate){
@@ -175,7 +196,7 @@ function preset2() {
       SF = customSF ? SF :2;
       ipr = 10;
       wrap.checked = true;
-      ants = [[100, 100, dir_L]];
+      ants = [[floor(W/2), floor(H/2), dir_L]];
       pallete = pallete.includes("⏸") ? "Cubo Ant 1" : pallete;
       if(!customRotate){
         rulesC = Array.from(palletes[pallete].colors)
@@ -218,7 +239,7 @@ function preset3() {
       SF = customSF ? SF :2;
       ipr = 10;
       wrap.checked = true;
-      ants = [[100, 100, dir_L]];
+      ants = [[floor(W/2), floor(H/2), dir_L]];
       pallete = pallete.includes("⏸") ? "Ice Cream GB" : pallete;
       if(!customRotate){
         rulesC = Array.from(palletes[pallete].colors)
@@ -241,7 +262,7 @@ function preset4() {
       SF = customSF ? SF :2;
       ipr = 10;
       wrap.checked = true;
-      ants = [[100, 100, dir_U]];
+      ants = [[floor(W/2), floor(H/2), dir_U]];
       pallete = pallete.includes("⏸") ? "Lava-GB" : pallete;
       if(!customRotate){
         rulesC = Array.from(palletes[pallete].colors)
@@ -264,7 +285,7 @@ function preset5() {
       SF = customSF ? SF :2;
       ipr = 10;
       wrap.checked = true;
-      ants = [[100, 100, dir_U]];
+      ants = [[floor(W/2), floor(H/2), dir_U]];
       pallete = pallete.includes("⏸") ? "INKPINK" : pallete;
       if(!customRotate){
         rulesC = Array.from(palletes[pallete].colors)
@@ -288,10 +309,10 @@ function preset6() {
       ipr = 3;
       wrap.checked = true;
       ants = [
-        [50, 45, dir_D],
-        [55, 50, dir_L],
-        [50, 55, dir_U],
-        [45, 50, dir_R],
+        [floor(W/2), floor(H/2)-5, dir_D],
+        [floor(W/2)+5, floor(H/2), dir_L],
+        [floor(W/2), floor(H/2)+5, dir_U],
+        [floor(W/2)-5, floor(H/2), dir_R],
       ];
       pallete = pallete.includes("⏸") ? "curiosities" : pallete;
       if(!customRotate){
@@ -315,7 +336,7 @@ function preset7() {
       SF = customSF ? SF :1;
       ipr = 30;
       wrap.checked = true;
-      ants = [[200,200, dir_U]];
+      ants = [[floor(W/2), floor(H/2), dir_U]];
       pallete = pallete.includes("⏸") ? "Everglow Diamond" : pallete;
       if(!customRotate){
         rulesC = Array.from(palletes[pallete].colors)
@@ -351,7 +372,7 @@ function preset8(){
       SF = customSF ? SF :2;
       ipr = 25;
       wrap.checked = true;
-      ants = [[100, 100, dir_U]];
+      ants = [[floor(W/2), floor(H/2), dir_U]];
       pallete = pallete.includes("⏸") ? "1bit-styx" : pallete;
       if(!customRotate){
         rulesC = Array.from(palletes[pallete].colors)
@@ -375,7 +396,7 @@ function preset9(){
       SF = customSF ? SF :2;
       ipr = 50;
       wrap.checked = true;
-      ants = [[100, 100, dir_D]];
+      ants = [[floor(W/2), floor(H/2), dir_D]];
       pallete = pallete.includes("⏸") ? "Ghost Town" : pallete;
   
       if(!customRotate){
@@ -412,7 +433,7 @@ function preset10(){
       SF = customSF ? SF :2;
       wrap.checked = true;
       ipr = 50;
-      ants = [[100,100, dir_D]];
+      ants = [[floor(W/2), floor(H/2), dir_D]];
       pallete = pallete.includes("⏸") ? "White Scape" : pallete;
       if(!customRotate){
         rulesC = Array.from(palletes[pallete].colors)
@@ -445,10 +466,10 @@ function preset11(){
       SF = customSF ? SF :4;
       ipr = 3;
       ants = [
-        [57, 57, dir_U],
-        [57, 43, dir_L],
-        [43, 43, dir_D],
-        [43, 57, dir_R],
+        [floor(W/2)+7, floor(H/2)+7, dir_U],
+        [floor(W/2)+7, floor(H/2)-7, dir_L],
+        [floor(W/2)-7, floor(H/2)-7, dir_D],
+        [floor(W/2)-7, floor(H/2)+7, dir_R],
       ];
       pallete = pallete.includes("⏸") ? "Bitbee" : pallete;
       if(!customRotate){
@@ -550,6 +571,25 @@ function preset14() {
 function preset15() {
   //RLLLLRRRLLLR
   //Falls into a pattern of making a logarithmic spiral, surrounded by a solid square of cells.
+        presetInfo =
+        "Preset 15:<br>Falls into a pattern of making a Logarithmic spiral, surrounded by a solid square of cells.";
+      wrap.checked = false;
+      W = customW ?  W :400;
+      H = customH ?  H :400;
+      SF = customSF ? SF :1;
+      ipr = 25;
+      ants = [[200, 200, dir_R]];
+      pallete = pallete.includes("⏸") ? "Everglow Diamond" : pallete;
+      if(!customRotate){
+        rulesC = Array.from(palletes[pallete].colors)
+        fillColorIdx = 3
+        for (let i = 0; i < fillColorIdx; i++) { // rotates the array to have a different fillColor
+          rulesC.push(rulesC.shift());
+        }
+      }
+      rulesD = [turn_R, turn_L, turn_L, turn_L, turn_L, turn_R, turn_R, turn_R, turn_L, turn_L, turn_L, turn_R];
+  pallete = pallete+"⏸"
+    customRotate = false
 }
 
 let presets = [preset0, preset1, preset2, preset3, preset4, preset5, preset6, preset7, preset8, preset9, preset10, preset11, preset12, preset13, preset14, preset15]
