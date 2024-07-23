@@ -8,16 +8,26 @@
 //https://www.reddit.com/r/cellular_automata/comments/h83t3z/this_is_the_largest_highway_ive_found_on_langtons/
 //https://mathtician.weebly.com/langtons-ant.html
 
-// NOTICE
-// in js, ANY `let new = arr` creates a REFERENCE of the array, even if its 1D. Use `let new = Array.from(arr)` `arr.slice()` or `[...arr]` instead
-
 // TODO
 // allow for custom rulesets using JSON (I could make a null preset for custom uploads, and then set the custom preset in the load button function))
 // allow for custom palletes using JSON (you cant rn because I have the preset loading in the setup phase :D 
 // set mobile zoom to 200? idk
 // move presetInfo update to handlePresetHTML
 // make neumorphic UI? (new version pls cuz it might look dumb on all the buttons)
+// some user feedback for a dead ant
+// add gif exporting (seperate div, enter dims, start iter, end iter, palette and ipr. you can speed up urself, provide link)
+// //  https://nono.ma/export-gif-p5js ^^
+// use vm or em or whatever in css to use all the available space :D
+// move some presets back to the center (floor) so that you can give them more room to expand
+// stop creating so many canvas objects
+// add breaks in calculate ants if dir ever becomes NaN
 
+
+// ERROR
+// i tried fixing the fact that every call to restartSim() created another canvas element by using resizeCanvas() instead of createCanvas(), but this messed up the width and height changeing, by making the direction NaN somehow
+// spamming loadPallete can effect the initial direction of the ant... this may be related to the first error
+// i also tried overloading p5 in order to make reading the image data more effecient... but how much more effecient is it...
+// given how much laggier a 800x800 canvas is than a 600x600, id figure a lot.
 
 let W;
 let H;
@@ -81,8 +91,10 @@ function preload() {
 
 function setup() {
   loadPreset()  
+  createCanvas(W*SF, H*SF)
   restartSim()
   lastSecond = millis()
+  
 }
 
 function draw() {    
