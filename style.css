@@ -12,7 +12,7 @@ span {
   color: rgb(221, 221, 221);
 }
 
-button {
+button.old {
   width: 30px;
   height: 22px;
   border-radius: 10px;
@@ -24,7 +24,7 @@ input[type="text"] {
   height: 21px;
 }
 
-button:hover{
+button.old:hover{
  border-radius: 5px; 
 }
 
@@ -119,20 +119,196 @@ p#p_iterCount{
   display: inline-block;
 }
 
+
 .box3 {
   margin: 70px;
   padding: 50px;
-  transition-duration: 0.5s;
+  transition-duration: 0.2s;
   border-radius: 50px;
   background: #1c1c1c;
   width: 700px;
   height: 350px;
   /* For it to look good, the numbers are height/10, width/10, shorter dimension/5  and the colors are +5% lightness and -5% lightness*/
-box-shadow:  35px 70px 70px #0e0e0e,
-             -35px -70px 70px #2a2a2a;
+box-shadow:  35px 35px 50px #161616,
+             -35px -35px 50px #222222;
 }
 
+
 .box3:hover {
-box-shadow: inset 35px 70px 70px #0e0e0e,
-            inset -35px -70px 70px #2a2a2a;
+  padding-left: 51px;
+  padding-top: 51px;
+  padding-right: 49px;
+  padding-bottom: 49px;
+  animation: neumorphHover 0.2s ease-in-out;
+
+  background: linear-gradient(145deg, #191919, #1e1e1e);
 }
+
+@keyframes neumorphHover {
+  0%   {background: linear-gradient(145deg, #1c1c1c, #1c1c1c);}
+  50%  {background: linear-gradient(145deg, rgb(26,26,26), rgb(29,29,29));}
+  100% {background: linear-gradient(145deg, #191919, #1e1e1e);}
+}
+
+.box3:active {
+  animation: neumorphPress 0.2s ease-in-out;
+  padding-top: 60px;
+  padding-left: 60px;
+  padding-right: 40px;
+  padding-bottom: 40px;
+    box-shadow: inset 35px 35px 50px #161616,
+                inset -35px -35px 50px #222222;
+}
+
+@keyframes neumorphPress {
+  
+  0% {box-shadow:  35px 35px 50px #161616,
+             -35px -35px 50px #222222;}
+  50% { box-shadow: 0px 0px 0px rgba(0,0,0,0)}
+  51% {box-shadow: inset 0px 0px 0px #161616,
+                inset 0px 0px 0px #222222;}
+  100% {    box-shadow: inset 35px 35px 50px #161616,
+                inset -35px -35px 50px #222222;}
+} 
+
+
+
+
+/* Popup container - can be anything you want */
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+/* The actual popup */
+.popup .popuptext {
+  visibility: hidden;
+  width: 180px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  rotate: 180deg;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+ 0% { transform-style: preserve-3d;
+ transform: rotateX(-70deg);
+ transition: all 0.3s;
+ opacity: 0;}
+ 100% {transform: rotateX(0deg);
+ opacity: 1;
+  }
+}
+
+* {
+    font-family: "Nunito", sans-serif;
+}
+
+/* yes i know i have a button class css above im jsut directly rewriting it piss off it has sentimental value */
+
+button {
+  border: 1px solid rgb(0,0,0,0);
+  color: #ddd;
+  width: 30px;
+  height:30px;
+  border-radius: 6px;
+background: #1c1c1c;
+box-shadow:  5px 5px 10px #121212,
+             -5px -5px 10px #262626;
+  transition-duration: 0.5s;
+}
+
+button:hover{
+  border-radius: 20px;
+background: linear-gradient(145deg, #191919, #1e1e1e);
+box-shadow:  5px 5px 10px #121212,
+             -5px -5px 10px #262626;
+}
+
+button:active {
+  border-radius: 6px;
+background: #1c1c1c;
+box-shadow: inset 5px 5px 10px #121212,
+            inset -5px -5px 10px #262626;
+}
+
+input[type="text"] {
+  color:#ddd;
+  background: #171717;
+  box-shadow:  5px 5px 10px #0e0e0e,
+             -5px -5px 10px #202020;
+  border: none;
+  border-radius: 7px;
+  padding-left: 4px;
+  padding-top: 4px;
+}
+
+/* I don't like these... */
+input[type="checkbox"] {
+        width: 13px;
+        height: 13px;
+        appearance: none;
+        -webkit-appearance: none;
+        border-radius: 3px;
+        background: #1c1c1c;
+        box-shadow: 1px 1px 3px #0b0b0b, -1px -1px 3px #2d2d2d;
+        cursor: pointer;
+    }
+
+input[type="checkbox"]:checked {
+        box-shadow: inset 1px 1px 3px #0b0b0b, inset -1px -1px 3px #2d2d2d;
+    }
+
+input[type="checkbox"]:checked::before {
+        content: 'x';
+        color: #ddd;
+        position: relative;
+        bottom: 30%;
+        left: 20%;
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+
+select {
+  border:none;
+  color: #ddd;
+  border-radius: 6px;
+background: #1c1c1c;
+box-shadow:  5px 5px 10px #121212,
+             -5px -5px 10px #262626;
+}
+
+select:hover {
+  border-radius: 6px;
+  background: #1c1c1c;
+  box-shadow: inset 5px 5px 10px #121212,
+            inset -5px -5px 10px #262626;
+}
+
