@@ -6,6 +6,18 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.js"></script>
+    <script>
+    // OVERLOAD P5.js to optimize frequent ReadImageData calls
+    function Renderer2D(elt, pInst, isMainCanvas) {
+            var _this;
+            _classCallCheck(this, Renderer2D);
+            _this = _super.call(this, elt, pInst, isMainCanvas);
+            _this.drawingContext = _this.canvas.getContext('2d', {willReadFrequently: true});
+            _this._pInst._setProperty('drawingContext', _this.drawingContext);
+            return _this;
+          }
+          
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/addons/p5.sound.min.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
     <meta charset="utf-8" />
@@ -54,7 +66,11 @@
       <p>Scale Factor:&ensp;</p><input id="p_SF" type="text">&ensp;
       <p>Wrap sides:</p><input id="p_wrap" type="checkbox">
       <br>
-      <p>Rules:</p><p id="p_rules"></p>
+      
+      <p>Rules:</p>
+      <div class="popup" onclick="popup()"><p id="p_ants"></p><span class="popuptext" id="popup"></span></div>
+      <p id="p_rules"></p>      
+      
       <br>
       <p>Pallete:</p><p id="p_pallete"></p>
       <br>
@@ -69,7 +85,7 @@
       <br>
       This will eventually have a way to load in a custom preset, pallete, rules, canvas, and everything.</p>
     </div>
-    <footer><p>v8.2</p></footer>
+    <footer><p>v9.0</p></footer>
     <script src="presets.js"></script>
     <script src="UI.js"></script>
     <script src="ants.js"></script>
